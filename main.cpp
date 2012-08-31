@@ -83,8 +83,8 @@ int main(int argc, const char * argv[])
                         sta_tx[sta]++;
                         if(sticky == 1){ //determines if the station should pick a deterministic backoff timer	
                         	sta_backoff_counter[sta] = (CWmin/2) << sta_backoff_stage[sta];
-                        	if(sta_stickyness[sta] < MAX_STICKYNESS){ 
-                        		sta_stickyness[sta] += 1; //gains the ability to pick the same backoff on the next slot
+                        	if(sta_stickyness[sta] <= MAX_STICKYNESS){ 
+                        		sta_stickyness[sta]++; //gains the ability to pick the same backoff on the next slot
                         	}
                         	else{
                         		sta_stickyness[sta] = MAX_STICKYNESS;
@@ -104,7 +104,7 @@ int main(int argc, const char * argv[])
                 		sta_collisions[sta]++;
                 		if(sta_stickyness[sta] > 0){
                 			sta_backoff_counter[sta] = (CWmin/2) << sta_backoff_stage[sta];
-                			sta_stickyness[sta] -= 1; //losses one opportunity to chose a deterministic backoff in the next round if it collides
+                			sta_stickyness[sta]--; //losses one opportunity to chose a deterministic backoff in the next round if it collides
                 		}
                 		else{
                 			sta_backoff_stage[sta] = MIN(sta_backoff_stage[sta] + 1, MAX_STA_BACKOFF_STAGE);
