@@ -31,7 +31,7 @@ int main(int argc, const char * argv[])
         
     if(argc >=2) number_sta = atoi(argv[1]);
     if(argc >=3) sticky = atoi(argv[2]);
-    if(argc >=3) PRINT = atoi(argv[3]);
+    if(argc >=4) PRINT = atoi(argv[3]);
     srand(getpid());
     //number_sta = 5;
     //sticky = 1;
