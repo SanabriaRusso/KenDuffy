@@ -10,7 +10,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include "defs/constants.h"
+#include "defs/display.h"
 
 #define MIN(a,b)       (a < b) ? (a) : (b)
 
@@ -28,13 +28,15 @@ int main(int argc, const char * argv[])
     int number_sta; //number of stations
     int sticky;	//stickness as Ken Duffy's proposal
     int PRINT;
+    
+    number_sta = 5;
+    sticky = 1;    
         
     if(argc >=2) number_sta = atoi(argv[1]);
     if(argc >=3) sticky = atoi(argv[2]);
-    if(argc >=4) PRINT = atoi(argv[3]);
+    if(argc >=3) PRINT = atoi(argv[3]);
     srand(getpid());
-    //number_sta = 5;
-    //sticky = 1;
+    
     
     if(PRINT == 1)cout << "Number of stations: " << number_sta << endl;
     
@@ -83,7 +85,8 @@ int main(int argc, const char * argv[])
                         sta_tx[sta]++;
                         if(sticky == 1){ //determines if the station should pick a deterministic backoff timer	
                         	sta_backoff_counter[sta] = (CWmin/2) << sta_backoff_stage[sta];
-                        	if(sta_stickyness[sta] <= MAX_STICKYNESS){ 
+                        	if(sta_stickyness[sta] <= MAX_STICKYNESS){
+                        		//commenting below, will look like Jaume's proposal
                         		sta_stickyness[sta]++; //gains the ability to pick the same backoff on the next slot
                         	}
                         	else{
@@ -119,7 +122,7 @@ int main(int argc, const char * argv[])
         for(int sta = 0; sta <= number_sta ; sta++){
         	if(sta_backoff_counter[sta] == 0) continue;
         	sta_backoff_counter[sta]--;
-        	if(PRINT == 1)cout << "Station: " << sta << " new backoff timer is: " << sta_backoff_counter[sta] << endl;
+        	if(PRINT == 1) cout << "Station: " << sta << " new backoff timer is: " << sta_backoff_counter[sta] << endl;
         }
     }
     
@@ -136,6 +139,7 @@ int main(int argc, const char * argv[])
     cout << "The overall number of packets sent are: " << tx_packets << endl;
     cout << "The overall collisions are: " << overallCollisions << endl;
     
+    display(number_sta, tx_packets, overallCollisions);
     
     return 0;
 }
