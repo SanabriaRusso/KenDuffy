@@ -40,7 +40,7 @@ int main(int argc, const char * argv[])
 	
 	//cout << command.str().c_str() << endl;
 	
-	for(int i = 0; i <= repetitions; i++){
+	for(int i = 0; i < repetitions; i++){
 		system(command.str().c_str()); 
 	}
 	
@@ -90,7 +90,7 @@ int main(int argc, const char * argv[])
         iterator++;
     }
     
-    for(int i = 0; i <= iterator; i++){
+    for(int i = 0; i < iterator; i++){
     	accumTX += statistics[i].TX;
     	accumCol += statistics[i].collisions;
     }

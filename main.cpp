@@ -51,7 +51,7 @@ int main(int argc, const char * argv[])
     
     //Filling the arrays of the size of number of stations
     
-    for(int sta = 0; sta <= number_sta; sta++){
+    for(int sta = 0; sta < number_sta; sta++){
     	    sta_backoff_counter[sta] = 0;
     	    sta_collisions[sta] = 0;
     	    sta_tx[sta] = 0;
@@ -61,16 +61,16 @@ int main(int argc, const char * argv[])
     
     
     //Transmissions
-    for(int sta = 0; sta <= number_sta; sta++){
+    for(int sta = 0; sta < number_sta; sta++){
         sta_backoff_counter[sta] = rand()%CWmin;
         if(PRINT == 1)cout << "Station: " << sta << " setted backoff timer to: " << sta_backoff_counter[sta] << endl;
     }
     
-    for(long int slots = 0; slots <= MAX_SLOTS; slots++){
+    for(long int slots = 0; slots < MAX_SLOTS; slots++){
     	slot_tx[slots] = 0;
         //Checking if there are transmissions in this slot
             //Transmitting if the medium is free
-        for(int sta = 0; sta <= number_sta; sta++){
+        for(int sta = 0; sta < number_sta; sta++){
             if(sta_backoff_counter[sta] == 0){
                 slot_tx[slots]++;
                 if(PRINT == 1)cout << "**Station: " << sta << " sent a packet at slot: " << slots << endl;
@@ -80,7 +80,7 @@ int main(int argc, const char * argv[])
             case 0: //free slot
                 break;
             case 1: //there has been 1 successful transmission
-                for(int sta = 0; sta <= number_sta; sta++){
+                for(int sta = 0; sta < number_sta; sta++){
                     if(sta_backoff_counter[sta] == 0) {
                         sta_tx[sta]++;
                         if(sticky == 1){ //determines if the station should pick a deterministic backoff timer	
@@ -102,7 +102,7 @@ int main(int argc, const char * argv[])
                 
             default: //collisions
                 if(PRINT == 1)cout << "##There are: " << slot_tx[slots] << " packets colliding at slot: " << slots << endl;
-                for(int sta = 0; sta <= number_sta; sta++){
+                for(int sta = 0; sta < number_sta; sta++){
                 	if(sta_backoff_counter[sta] == 0){
                 		sta_collisions[sta]++;
                 		if(sta_stickyness[sta] > 0){
@@ -119,7 +119,7 @@ int main(int argc, const char * argv[])
         }
         
         //Decrememting the  backoff counters
-        for(int sta = 0; sta <= number_sta ; sta++){
+        for(int sta = 0; sta < number_sta ; sta++){
         	if(sta_backoff_counter[sta] == 0) continue;
         	sta_backoff_counter[sta]--;
         	if(PRINT == 1) cout << "Station: " << sta << " new backoff timer is: " << sta_backoff_counter[sta] << endl;
@@ -131,7 +131,7 @@ int main(int argc, const char * argv[])
     int overallCollisions = 0;
     
     
-    for(int sta = 0; sta <= number_sta; sta++){
+    for(int sta = 0; sta < number_sta; sta++){
     	    tx_packets += sta_tx[sta];
     	    overallCollisions += sta_collisions[sta];
     }
