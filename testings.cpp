@@ -27,6 +27,7 @@ int main(int argc, const char * argv[])
 {
 	int repetitions = 100;
 	int stations = 10;
+	int stickiness = 0;
 	int numberOfLines = 0;
 	stringstream command (stringstream::in | stringstream::out);
 	struct stats *statistics;
@@ -35,8 +36,9 @@ int main(int argc, const char * argv[])
 	
 	if(argc >= 2) repetitions = atoi(argv[1]);
 	if(argc >= 3) stations = atoi(argv[2]);
+	if(argc >= 3) stickiness = atoi(argv[3]);
 	
-	command << "./simulator " << stations << " 1 0";
+	command << "./simulator " << stations << " " << stickiness << "  0";
 	
 	//cout << command.str().c_str() << endl;
 	

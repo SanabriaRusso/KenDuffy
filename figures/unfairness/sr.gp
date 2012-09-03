@@ -1,9 +1,9 @@
-#!/usr/local/bin/gnuplot -persist
+#!/opt/local/bin/gnuplot -persist
 #
 #    
 #    	G N U P L O T
 #    	Version 4.6 patchlevel 0    last modified 2012-03-04 
-#    	Build System: Linux x86_64
+#    	Build System: Darwin x86_64
 #    
 #    	Copyright (C) 1986-1993, 1998, 2004, 2007-2012
 #    	Thomas Williams, Colin Kelley and many others
@@ -11,8 +11,13 @@
 #    	gnuplot home:     http://www.gnuplot.info
 #    	faq, bugs, etc:   type "help FAQ"
 #    	immediate help:   type "help"  (plot window: hit 'h')
-# set terminal x11 
-# set output
+# set terminal postscript landscape enhanced defaultplex \
+   leveldefault color colortext \
+   dashed dashlength 1.0 linewidth 1.0 butt noclip \
+   nobackground \
+   palfuncparam 2000,0.003 \
+   "Helvetica" 14  fontscale 1.0 
+# set output 'test.eps'
 unset clip points
 set clip one
 unset clip two
@@ -52,7 +57,7 @@ set key maxcolumns 0 maxrows 0
 set key noopaque
 unset label
 unset arrow
-set arrow 1 from 1, 24998, 0 to 2, 24998, 0 nohead back filled linetype 0 linewidth 1.500
+set arrow 1 from 1, 23587, 0 to 2, 23867, 0 nohead back filled linetype 0 linewidth 1.500
 set arrow 2 from second 0, 0, 0 to second 3, 0, 0 nohead back filled linetype 0 linewidth 1.000
 set style increment default
 unset style line
@@ -129,7 +134,7 @@ set ylabel "Successful TX"
 set ylabel  offset character 0, 0, 0 font "" textcolor lt -1 rotate by -270
 set y2label "Collisions" 
 set y2label  offset character 0, 0, 0 font "" textcolor lt -1 rotate by -270
-set yrange [ 23200.0 : 25500.0 ] noreverse nowriteback
+set yrange [ 23000.0 : 24000.0 ] noreverse nowriteback
 set y2range [ -1.00000 : 1.00000 ] noreverse nowriteback
 set zlabel "" 
 set zlabel  offset character 0, 0, 0 font "" textcolor lt -1 norotate
@@ -156,5 +161,5 @@ set fontpath
 set psdir
 set fit noerrorvariables
 GNUTERM = "aqua"
-plot "2_sta_static_averaged.txt" u 1:2 title "Successful TX (J's)" with points ls 1 lw 2 axis x1y1, "" using 1:3 title "Collisions (J's)" with points ls 3 lw 2 axis x1y2, "2_sta_var_averaged.txt" using 1:2 title "Successful TX" with points ls 2 lw 2 axis x1y1, "" u 1:3 title "Collisions" with points ls 4 lw 2 axis x1y2
+plot "2_sta_static_averaged.txt" u 1:2 title "Successful TX (J's)" with points ls 1 lw 10 axis x1y1, "" using 1:3 title "Collisions (J's)" with points ls 3 lw 10 axis x1y2, "2_sta_var_averaged.txt" using 1:2 title "Successful TX" with points ls 2 lw 10 axis x1y1, "" u 1:3 title "Collisions" with points ls 4 lw 10 axis x1y2
 #    EOF

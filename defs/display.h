@@ -9,7 +9,7 @@
 #include <fstream>
 using namespace std;
 
-void display(int sta, int tx, int collisions){
+void display(int sta, long int tx,  long int collisions){
 	ofstream output;
 	output.open("results.txt", ios::app);
 	output << sta << " " << tx << " " << collisions << endl;
