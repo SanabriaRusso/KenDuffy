@@ -157,13 +157,13 @@ int main(int argc, const char * argv[])
     for(int sta = 0; sta < number_sta; sta++){
     	    throughput[sta] = (sta_tx[sta]) / ((MAX_SLOTS - sta_tx[sta])*9E-6 + (sta_tx[sta] * TxD));
     	if(PRINT == 1){
-    		cout << "Station " << sta << "'s approx. throughput is: " << throughput[sta] << " bps" << endl;	
+    		cout << "Station " << sta << "'s approx. throughput is: " << throughput[sta]*12000 << " bps" << endl;	
     	}
     	averageThroughput += throughput[sta];
     }
     
     cout << "The approximate delay per successful transmission is: " << TxD << endl;
-    cout << "The average throughput is: " << averageThroughput/number_sta << endl; 
+    cout << "The average throughput is: " << (averageThroughput/number_sta)*12000 << endl; 
     cout << "The overall number of packets sent are: " << tx_packets << endl;
     cout << "The overall collisions are: " << overallCollisions << endl;
     
