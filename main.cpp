@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "defs/display.h"
+#include "defs/slotTime11nParameters.h"
 
 #define MIN(a,b)       (a < b) ? (a) : (b)
 
@@ -28,11 +29,22 @@ int main(int argc, const char * argv[])
     int PRINT;
     int MAX_STICKINESS = 0;
     
+    //Aggregation and performance are parameters to determine the
+    //successfull transmission delay's parameters.
+    //Values range [0-1]. Zero being LESS and one MORE of that parameter.
+    //For insights see def/slotTime11nParameters.h
+    
+    int aggregation = 0;
+    int performance = 0;
+    
     number_sta = 5;
         
     if(argc >=2) number_sta = atoi(argv[1]);
     if(argc >=3) MAX_STICKINESS = atoi(argv[2]);
-    if(argc >=3) PRINT = atoi(argv[3]);
+    if(argc >=4) aggregation = atoi(argv[3]);
+    if(argc >=5) performance = atoi(argv[4]);
+    if(argc >=6) PRINT = atoi(argv[5]);
+    
     srand(getpid());
     
     
@@ -46,6 +58,7 @@ int main(int argc, const char * argv[])
     long int sta_tx[number_sta];		//transmitted packets per station
     int sta_stickiness[number_sta];	//it is 1 if the station is allowed to repeat its backoff timer, 0 otherwise
     int sta_backoff_stage[number_sta];	//when increases, decreases the chances of collision
+    double TxD;	//sucessful transmission delay per packet
     
     //Filling the arrays of the size of number of stations
     
@@ -126,15 +139,34 @@ int main(int argc, const char * argv[])
     //Gathering statistics
     int tx_packets = 0;
     int overallCollisions = 0;
+    double *throughput;
+    double averageThroughput = 0.0;
+    
+    throughput = new double[number_sta];
     
     
     for(int sta = 0; sta < number_sta; sta++){
-    	    tx_packets += sta_tx[sta];
-    	    overallCollisions += sta_collisions[sta];
+    	tx_packets += sta_tx[sta];
+    	overallCollisions += sta_collisions[sta]; 
     }
     
+    //Determining the succesfull transmission delays
+    
+    TxD = slotTime11nParameters(aggregation, performance);
+    
+    for(int sta = 0; sta < number_sta; sta++){
+    	    throughput[sta] = (sta_tx[sta]) / ((MAX_SLOTS - sta_tx[sta])*9E-6 + (sta_tx[sta] * TxD));
+    	if(PRINT == 1){
+    		cout << "Station " << sta << "'s approx. throughput is: " << throughput[sta] << " bps" << endl;	
+    	}
+    	averageThroughput += throughput[sta];
+    }
+    
+    cout << "The approximate delay per successful transmission is: " << TxD << endl;
+    cout << "The average throughput is: " << averageThroughput/number_sta << endl; 
     cout << "The overall number of packets sent are: " << tx_packets << endl;
     cout << "The overall collisions are: " << overallCollisions << endl;
+    
     
     display(number_sta, tx_packets, overallCollisions);
     
